@@ -4,36 +4,49 @@ import {useRouter} from 'next/router'
 import {AuthProvider, useAuth} from './Auth'
 
 
+
 export default function Login() {
   
     const router = useRouter()
     const [id, setId] = useState('');
     const [email, setEmail] = useState('');
     const {setIsLoggedIn} = useAuth();
-    const loggined = () => setIsLoggedIn(true);
+    const IsLoggedIn = useAuth();
+    
 
     const onChange = (e) => {
       const {name, value} = e.target;
       if(name === 'id') setId(value);
       if(name === 'email') setEmail(value);
     }
- 
-    const letsLogin = async (id, email) => {
+
+   const logout = async (e) => {
+      e.preventDefault();
+      setIsLoggedIn(false);
+      console.log("로그아웃 성공");
+      console.log(IsLoggedIn);
+    };
+
+    const letsLogin = async (id, email, e) => {
+      e.preventDefault();
       const response = await fetch(`http://localhost:8080/user?id=${id}`);
       const [user] = await response.json();
       if (user&&user.email === email)  {
         console.log("로그인 성공");
-        {loggined};
-        window.location.href = 'http://localhost:3000';
+        setIsLoggedIn(true);
+        console.log(IsLoggedIn);
+        router.push('/');
       }else{
         alert('로그인 실패');
         router.push('/login');
       }
     }
 
+    console.log(IsLoggedIn);
+
 
     return (
-<AuthProvider>
+    <AuthProvider>
         <Layout>
 	    <section className="text-gray-600 body-font">
             <form className="Login-input">
@@ -54,9 +67,15 @@ export default function Login() {
       </div>
       <button 
         className="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
-        onClick={() => letsLogin(id, email)}
+        onClick={(e) => letsLogin(id, email, e)}
       >
         로그인
+      </button>
+      <button 
+        className="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg"
+        onClick={(e) => logout(e)}
+      >
+        로그아웃
       </button>
       
     </div>

@@ -9,11 +9,11 @@ export default function Projects({resData}) {
     const router = useRouter();
     
     const isLoggedIn = useAuth();
-
-    if(!isLoggedIn) {
+    console.log('lksdjf',isLoggedIn);
+    if(!isLoggedIn.isLoggedIn) {
         alert('로그인이 필요합니다.');
         router.push('./login');
-        
+        return null;
     }
     
     function regSbt() {
