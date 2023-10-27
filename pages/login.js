@@ -1,6 +1,7 @@
 import Layout from "../components/layout"
 import React, { useState } from 'react'  
 import {useRouter} from 'next/router'
+import {AuthProvider, useAuth} from './Auth'
 
 
 export default function Login() {
@@ -8,18 +9,21 @@ export default function Login() {
     const router = useRouter()
     const [id, setId] = useState('');
     const [email, setEmail] = useState('');
+    const {setIsLoggedIn} = useAuth();
+    const loggined = () => setIsLoggedIn(true);
 
     const onChange = (e) => {
       const {name, value} = e.target;
       if(name === 'id') setId(value);
       if(name === 'email') setEmail(value);
     }
-
+ 
     const letsLogin = async (id, email) => {
       const response = await fetch(`http://localhost:8080/user?id=${id}`);
       const [user] = await response.json();
-      if (user&&user.email === email) {
+      if (user&&user.email === email)  {
         console.log("로그인 성공");
+        {loggined};
         window.location.href = 'http://localhost:3000';
       }else{
         alert('로그인 실패');
@@ -29,7 +33,7 @@ export default function Login() {
 
 
     return (
-
+<AuthProvider>
         <Layout>
 	    <section className="text-gray-600 body-font">
             <form className="Login-input">
@@ -60,6 +64,6 @@ export default function Login() {
   </form>
 </section>
     </Layout>
-
+</AuthProvider>
   );
 }

@@ -1,9 +1,13 @@
 import Layout from '../components/layout';
 import Link from 'next/link';
-import Image from 'next/image'
+import Image from 'next/image';
+import { AuthProvider, useAuth } from './Auth';
+
+
 
 export default function Home() {
   return (
+    <AuthProvider>
     <Layout>
         <div className="flex items-center justify-center bg-gradient-to-t via-[#c8ebfd] to-[#e7e9fe] h-screen p-6">
             <section className="flex min-h-screen flex-col items-center justify-center text-gray-600 body-font">
@@ -30,5 +34,6 @@ export default function Home() {
             </section>
         </div>
     </Layout>
+    </AuthProvider>
   );
 }

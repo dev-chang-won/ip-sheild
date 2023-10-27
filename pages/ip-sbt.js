@@ -1,15 +1,27 @@
-import Layout from "../components/layout"
-import SbtItem from "../components/ip-sbt/sbt-item"
-import {useRouter} from 'next/router'
+import Layout from "../components/layout";
+import SbtItem from "../components/ip-sbt/sbt-item";
+import {useRouter} from 'next/router';
+import {AuthProvider, useAuth} from './Auth';
+
+
 
 export default function Projects({resData}) {
     const router = useRouter();
+    
+    const isLoggedIn = useAuth();
+
+    if(!isLoggedIn) {
+        alert('로그인이 필요합니다.');
+        router.push('./login');
+        
+    }
     
     function regSbt() {
         router.push('/sbt-reg-form')
     }    
     
     return (
+        <AuthProvider>
         <Layout >
             <div className="flex flex-col items-center justify-center min-h-screen px-3 mb-10">
                 <h1 className="text-4xl font-bold sm:text-6xl">
@@ -29,6 +41,7 @@ export default function Projects({resData}) {
                 </div>            
             </div>
         </Layout>
+        </AuthProvider>
     );
 }
 
@@ -44,3 +57,4 @@ export async function getServerSideProps(context) {
       props: {resData}, 
     }
 }
+
