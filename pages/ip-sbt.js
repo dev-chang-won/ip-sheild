@@ -9,7 +9,7 @@ export default function Projects({resData}) {
     const router = useRouter();
     
     const isLoggedIn = useAuth();
-    console.log('lksdjf',isLoggedIn);
+    console.log(isLoggedIn);
     if(!isLoggedIn.isLoggedIn) {
         alert('로그인이 필요합니다.');
         router.push('./login');
